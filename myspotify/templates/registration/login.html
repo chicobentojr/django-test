@@ -1,0 +1,52 @@
+{% extends 'myspotify/base.html' %}
+
+{% block content %}
+
+<div class="ui middle aligned center aligned grid">
+  <div class="login column">
+    <h2 class="ui blue header">
+      <div class="content">
+        Login
+      </div>
+    </h2>
+    <form class="ui form {{ form.errors|yesno:"error," }}" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <div class="ui segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            {{ form.username }}
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            {{ form.password }}
+          </div>
+        </div>
+        <input type="submit" value="Login" class="ui fluid large blue submit button" />
+      </div>
+
+      <div class="ui error message">
+        {% if form.errors %}
+          <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+      </div>
+      {% if next %}
+        <div class="ui message">
+          {% if user.is_authenticated %}
+            <p>
+              Your account doesn't have access to this page. To proceed,
+              please login with an account that has access.
+            </p>
+          {% else %}
+            <p>Please login to see this page.</p>
+          {% endif %}
+        </div>
+      {% endif %}
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

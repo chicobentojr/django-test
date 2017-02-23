@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from myspotify.forms import LoginForm
 
 urlpatterns = [
-    url(r'^', include('myspotify.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^login$', auth_views.login, {'authentication_form': LoginForm}, name='login'),
+    url(r'^logout$', auth_views.logout, {'next_page':'/'}, name='logout'),
+    url(r'^', include('myspotify.urls')),
 ]

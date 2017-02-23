@@ -1,0 +1,62 @@
+{% extends "myspotify/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="ui segment">
+  <h3 class="ui header">Search</h3>
+  <p>Search any <b>Track</b>, <b>Artist</b> or <b>Album</b> from Spotify Api</p>
+  <form class="ui inline form" method="post" action="{% url 'myspotify:search'%}">
+    {% csrf_token %}
+    <div class="two fields">
+      <div class="field">
+        <label>Gender</label>
+        <select class="ui dropdown" name="type">
+          {# <option value="">Select a type</option>#}
+          <option value="artist">Artist</option>
+          {# <option value="album">Album</option>
+          <option value="track">Track</option>#}
+        </select>
+      </div>
+      <div class="field">
+        <label>Search</label>
+        <div class="ui action input">
+          <input type="text" value="jessie j" name="query">
+          <button class="ui button" type="submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  {% if results %}
+    <div class="ui segment">
+      <div class="ui divided items">
+        {% for result in results %}
+        <div class="item">
+          <div class="ui tiny image">
+            {% if result.images|length == 0 %}
+              <img src="{% static 'img/no-cover.png' %}">
+            {% else %}
+              <img src="{{ result.images.0.url }}">
+            {% endif %}
+          </div>
+          <div class="content">
+            <div class="header">{{ result.name }}</div>
+            <div class="meta">
+              <span>{{ result.type }}</span>
+            </div>
+            <div class="extra">
+              <a href="{% url 'myspotify:artists_save' artist_id=result.id %}" class="ui right floated primary button">
+                Save
+                <i class="right save icon"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

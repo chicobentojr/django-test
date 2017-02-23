@@ -1,9 +1,34 @@
-{% if artists %}
-    <ul>
-    {% for artist in artists %}
-        <li><a href="{% url 'myspotify:detail' artist.id %}">{{ artist.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No artists.</p>
-{% endif %}
+{% extends 'myspotify/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="ui segment">
+  <h3 class="ui header">Artists</h3>
+
+  {% if artists %}
+    <div class="ui segment">
+      <div class="ui divided items">
+        {% for artist in artists %}
+        <div class="item">
+          <div class="ui tiny image">
+            {% if not artist.image %}
+              <img src="{% static 'img/no-cover.png' %}">
+            {% else %}
+              <img src="{{ artist.image }}">
+            {% endif %}
+          </div>
+          <div class="content">
+            <div class="header">{{ artist.name }}</div>
+            <div class="meta">
+              <span>{{ artist.type }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

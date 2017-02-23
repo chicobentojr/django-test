@@ -1,0 +1,9 @@
+{% if artists %}
+    <ul>
+    {% for artist in artists %}
+        <li><a href="{% url 'myspotify:detail' artist.id %}">{{ artist.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No artists.</p>
+{% endif %}

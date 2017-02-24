@@ -30,8 +30,9 @@ if ENV == 'Production':
 # SECURITY WARNING: don't run with debug turned on in production!
 if ENV == 'Production':
     DEBUG = False
-else:
-    DEBUG = True
+    
+    
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 
 if ENV == 'Production':

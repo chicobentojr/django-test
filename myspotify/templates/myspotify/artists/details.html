@@ -17,22 +17,33 @@
       <img src="{{ artist.image }}">
     {% endif %}
   </div>
-  <div class="ui items">
-    {% for album in artist.album_set.all %}
-      <div class="item">
-        <div class="ui tiny circular image">
-          {% if not album.image %}
-            <img src="{% static 'img/no-cover.png' %}">
-          {% else %}
-            <img src="{{ album.image }}">
-          {% endif %}
+
+  {% if artist.album_set.all %}
+    <div class="ui cards">
+      {% for album in artist.album_set.all %}
+        <div class="card">
+          <div class="image">
+            {% if not album.image %}
+              <img src="{% static 'img/no-cover.png' %}">
+            {% else %}
+              <img src="{{ album.image }}">
+            {% endif %}
+          </div>
+          <div class="content">
+            <a href="https://open.spotify.com/album/{{album.id}}" target="_blank" class="header">{{album.name}}</a>
+            <div class="meta">
+              <a>{{album.album_type|title}}</a>
+            </div>
+            <div class="description">
+            </div>
+          </div>
         </div>
-        <div class="content">
-          <a href="{% url 'myspotify:artist_detail' artist_id=artist.id %}" class="header">{{ album.name }}</a>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-</div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h3 class="ui header">
+      There is no album saved! Click <a href="{% url 'myspotify:artists_load' artist_id=artist.id %}">here</a> to load albums!
+    </h3>
+  {% endif %}
 
 {% endblock %}

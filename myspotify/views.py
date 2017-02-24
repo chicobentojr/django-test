@@ -8,6 +8,9 @@ import requests, json
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('myspotify:search')
+
     return render(request, 'myspotify/index.html')
 
 @login_required()

@@ -30,10 +30,9 @@ if ENV == 'Production':
 # SECURITY WARNING: don't run with debug turned on in production!
 if ENV == 'Production':
     DEBUG = False
-    
-    
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 if ENV == 'Production':
     ALLOWED_HOSTS = ['spotify-django.herokuapp.com']

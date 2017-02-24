@@ -6,38 +6,44 @@
   <h3 class="ui header">Artists</h3>
 
   {% if artists %}
-    <div class="ui segment">
-      <div class="ui divided items">
-        {% for artist in artists %}
-          <div class="item">
-            <div class="ui small circular image">
-              {% if not artist.image %}
-                <img src="{% static 'img/no-cover.png' %}">
-              {% else %}
-                <img src="{{ artist.image }}">
+    <div class="ui cards">
+      {% for artist in artists %}
+        <div class="card">
+          <div class="image">
+            {% if not artist.image %}
+              <img src="{% static 'img/no-cover.png' %}">
+            {% else %}
+              <img src="{{ artist.image }}">
+            {% endif %}
+          </div>
+          <div class="content">
+            <a href="https://open.spotify.com/artist/{{artist.id}}" target="_blank" class="header">{{artist.name}}</a>
+            <div class="meta">
+              <span>{{artist.type|title}}</span>
+              {% if artist.album_set.all %}
+                &nbsp;|&nbsp;
+                <span>{{artist.album_set.all|length}} Albums</span>
               {% endif %}
             </div>
-            <div class="content">
-              <a href="{% url 'myspotify:artist_detail' artist_id=artist.id %}" class="header">{{ artist.name }}</a>
-              <div class="meta">
-                <span>{{ artist.type|title }}</span>
-              </div>
-              <div class="extra">
-                {% if artist.album_set.all %}
-                  {{artist.album_set.all|length}} Albums
-                {% endif %}
-                {% if artist.new %}
-                  <a href="{% url 'myspotify:artists_load' artist_id=artist.id %}" class="ui right floated labeled icon primary tiny button">
-                    Load Albums
-                    <i class="right download icon"></i>
-                  </a>
-                {% endif %}
-              </div>
-            </div>
           </div>
-        {% endfor %}
-      </div>
+          {% if artist.new %}
+            <a href="{% url 'myspotify:artists_load' artist_id=artist.id %}" class="ui bottom attached primary button">
+              <i class="download icon"></i>
+              Load Albums
+            </a>
+          {% else %}
+            <a href="{% url 'myspotify:artist_detail' artist_id=artist.id %}" class="ui bottom attached button">
+              <i class="external icon"></i>
+              Open Albums
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
+  {% else %}
+    <h3 class="ui header">
+      There is no artists saved!
+    </h3>
   {% endif %}
 
 </div>

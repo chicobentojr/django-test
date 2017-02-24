@@ -8,7 +8,10 @@ body {
 .main.container {
   margin-top: 4.5em;
 }
-
+.ui.cards {
+  align-items: center;
+  justify-content: center;
+}
 .login.column {
   max-width: 30em;
 }
@@ -18,4 +21,14 @@ body {
 .ui.footer.segment {
   margin: 5em 0em 0em;
   padding: 5em 0em;
+}
+.index.container {
+  text-align: center;
+  margin: 10em auto;
+}
+.index.container h1 {
+  font-size: 3em;
+}
+.index.container p {
+  font-size: 1.5em;
 }

@@ -10,9 +10,13 @@ https://docs.djangoproject.com/en/1.10/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
-from whitenoise.django import DjangoWhiteNoise
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangotest.settings")
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
+
+ENV = os.environ.get('ENV', 'Development')
+
+if ENV == 'Production':
+    from whitenoise.django import DjangoWhiteNoise
+    application = DjangoWhiteNoise(application)

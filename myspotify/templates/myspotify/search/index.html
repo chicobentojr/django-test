@@ -21,34 +21,32 @@
   </form>
 
   {% if results %}
-    <div class="ui segment">
-      <p>Results from "<b>{{query}}</b>"</p>
-      <div class="ui divided items">
-        {% for result in results %}
-          <div class="item">
-            <div class="ui small circular image">
-              {% if result.images|length == 0 %}
-                <img src="{% static 'img/no-cover.png' %}">
-              {% else %}
-                <img src="{{ result.images.0.url }}">
-              {% endif %}
-            </div>
-            <div class="content">
-              <div class="header">{{ result.name }}</div>
-              <div class="meta">
-                <span>{{ result.type|title }}</span>
-              </div>
-              <div class="extra">
-                <a href="{% url 'myspotify:artists_save' artist_id=result.id %}" class="ui right floated primary button">
-                  Save
-                  <i class="right save icon"></i>
-                </a>
-              </div>
+  <div class="ui segment">
+    <p>Results from "<b>{{query}}</b>"</p>
+    <div class="ui cards">
+      {% for result in results %}
+        <div class="card">
+          <div class="image">
+            {% if result.images|length == 0 %}
+              <img src="{% static 'img/no-cover.png' %}">
+            {% else %}
+              <img src="{{ result.images.0.url }}">
+            {% endif %}
+          </div>
+          <div class="content">
+            <a href="https://open.spotify.com/artist/{{result.id}}" target="_blank" class="header">{{result.name}}</a>
+            <div class="meta">
+              <span>{{result.type|title}}</span>
             </div>
           </div>
-        {% endfor %}
-      </div>
+          <a href="{% url 'myspotify:artists_save' artist_id=result.id %}" class="ui bottom attached primary button">
+            <i class="save icon"></i>
+            Save
+          </a>
+        </div>
+      {% endfor %}
     </div>
+  </div>
   {% endif %}
 </div>
 

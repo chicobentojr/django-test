@@ -1,0 +1,38 @@
+{% extends "myspotify/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="ui segment">
+  <h2 class="ui header">
+    {{ artist.name }}
+    <div class="sub header">
+      Albums
+    </div>
+  </h2>
+  <div style="display:none" class="ui floated right circular medium image">
+    {% if not artist.image %}
+      <img src="{% static 'img/no-cover.png' %}">
+    {% else %}
+      <img src="{{ artist.image }}">
+    {% endif %}
+  </div>
+  <div class="ui items">
+    {% for album in artist.album_set.all %}
+      <div class="item">
+        <div class="ui tiny circular image">
+          {% if not album.image %}
+            <img src="{% static 'img/no-cover.png' %}">
+          {% else %}
+            <img src="{{ album.image }}">
+          {% endif %}
+        </div>
+        <div class="content">
+          <a href="{% url 'myspotify:artist_detail' artist_id=artist.id %}" class="header">{{ album.name }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

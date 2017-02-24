@@ -16,6 +16,8 @@ def get_artist(artist_id):
 
     return artist
 
-def getArtistModel(artist_id):
-    json = get_artist(artist_id)
-    pass
+def get_artist_albums(artist_id):
+    r = requests.get(API_ARTIST + artist_id + '/albums')
+    albums = r.json()
+
+    return albums

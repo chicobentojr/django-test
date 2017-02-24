@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+ENV = os.environ.get('ENV', 'Development')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -22,11 +24,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$gfhxb___tjo(a%v0d&1$ov1d@ho_*7m_s$3%$jud7$k-44glz'
 
+if ENV == 'Production':
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if ENV == 'Production':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
 
+if ENV == 'Production':
+    ALLOWED_HOSTS = ['spotify-django.herokuapp.com']
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -82,6 +93,13 @@ DATABASES = {
     }
 }
 
+# Update database configuration with $DATABASE_URL.
+if ENV == 'Production':
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -120,3 +138,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+if ENV == 'Production':
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    # Extra places for collectstatic to find static files.
+    STATICFILES_DIRS = (
+       os.path.join(PROJECT_ROOT, 'static'),
+    )
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+if ENV == 'Production':
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
